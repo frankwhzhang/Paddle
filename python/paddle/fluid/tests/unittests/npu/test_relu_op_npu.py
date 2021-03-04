@@ -81,6 +81,33 @@ class TestReluFp16(OpTest):
         self.check_output_with_place(self.place, check_dygraph=False, atol=1e-5)
 
 
+@unittest.skipIf(not paddle.is_compiled_with_npu(),
+                 "core is not compiled with NPU")
+class TestReluNeg(OpTest):
+    def setUp(self):
+        self.set_npu()
+        self.op_type = "relu"
+        self.place = paddle.NPUPlace(0)
+
+        self.init_dtype()
+        np.random.seed(SEED)
+        x = np.array([0.1, -0.1, -1.0]).astype(self.dtype)
+        out = np.array([0.1, 0.0, 0.0]).astype(self.dtype)
+
+        self.inputs = {'X': OpTest.np_dtype_to_fluid_dtype(x)}
+        self.attrs = {}
+        self.outputs = {'Out': out}
+
+    def set_npu(self):
+        self.__class__.use_npu = True
+
+    def init_dtype(self):
+        self.dtype = np.float32
+
+    def test_check_output(self):
+        self.check_output_with_place(self.place, check_dygraph=False)
+
+
 #
 #
 #@unittest.skipIf(not paddle.is_compiled_with_npu(),
