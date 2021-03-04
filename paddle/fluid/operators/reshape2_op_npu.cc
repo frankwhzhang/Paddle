@@ -52,6 +52,7 @@ class Reshape2NPUKernel : public framework::OpKernel<T> {
     framework::TensorCopy(
         *x, ctx.GetPlace(),
         ctx.template device_context<platform::DeviceContext>(), out);
+    out.Resize(framework::make_ddim(shape));
   }
 };
 
