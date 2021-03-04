@@ -104,7 +104,7 @@ class TestReluNet(unittest.TestCase):
                 name="label", shape=[32, 1], dtype='int64')
 
             sum = paddle.add(a, b)
-            z = paddle.relu(sum)
+            z = paddle.nn.functional.relu(sum)
 
             fc_1 = fluid.layers.fc(input=z, size=128)
             prediction = fluid.layers.fc(input=fc_1, size=2, act='softmax')
