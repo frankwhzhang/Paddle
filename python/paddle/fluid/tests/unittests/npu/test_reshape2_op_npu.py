@@ -31,11 +31,10 @@ SEED = 2021
 class TestReshape2(OpTest):
     def setUp(self):
         self.set_npu()
-        self.init_data()
         self.op_type = "reshape2"
         self.place = paddle.NPUPlace(0)
 
-        np.random.seed(SEED)
+        self.init_data()
         self.inputs = {"X": np.random.random(self.ori_shape).astype("float32")}
         self.attrs = {"shape": self.new_shape}
         self.outputs = {
