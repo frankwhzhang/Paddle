@@ -52,5 +52,5 @@ namespace ops = paddle::operators;
 
 REGISTER_OP_NPU_KERNEL(
     scale, ops::ScaleNPUKernel<paddle::platform::NPUDeviceContext, float>,
-    ops::MulNPUKernel<paddle::platform::NPUDeviceContext,
-                      paddle::platform::float16>);
+    ops::ScaleNPUKernel<paddle::platform::NPUDeviceContext,
+                        paddle::platform::float16>);

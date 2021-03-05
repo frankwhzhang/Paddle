@@ -69,8 +69,8 @@ class FillConstantNPUKernel : public framework::OpKernel<T> {
 
     // Tensor factor_bc_tensor(data_type);
     out_var->mutable_data<T>(shape, place);
-    auto runner_bc =
-        NpuOpRunner("FillD", {tensor_tmp}, {*out_var}, {"dims", shape.size()});
+    auto runner_bc = NpuOpRunner("FillD", {tensor_tmp}, {*out_var},
+                                 {{"dims", shape.size()}});
     runner_bc.Run(stream);
   }
 };
