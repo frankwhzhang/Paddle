@@ -28,15 +28,21 @@ SEED = 2021
 
 @unittest.skipIf(not paddle.is_compiled_with_npu(),
                  "core is not compiled with NPU")
-class TestFillConstant(OpTest):
+class TestScale(OpTest):
     def setUp(self):
         self.set_npu()
+        self.op_type = "scale"
         self.place = paddle.NPUPlace(0)
-        self.op_type = "fill_constant"
+        self.init_dtype()
 
-        self.inputs = {}
-        self.attrs = {'shape': [123, 92], 'value': 3.8}
-        self.outputs = {'Out': np.full((123, 92), 3.8)}
+        self.inputs = {
+            'X': OpTest.np_dtype_to_fluid_dtype(
+                np.random.random((10, 10)).astype(self.dtype))
+        }
+        self.attrs = {'scale': -2.3}
+        self.outputs = {
+            'Out': self.inputs['X'] * self.dtype(self.attrs['scale'])
+        }
 
     def set_npu(self):
         self.__class__.use_npu = True
