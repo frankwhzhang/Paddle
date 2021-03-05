@@ -25,11 +25,14 @@ template <typename DeviceContext, typename T>
 class ScaleNPUKernel : public framework::OpKernel<T> {
  public:
   void Compute(const framework::ExecutionContext& ctx) const override {
-    auto* x = ctx.Input<framework::LoDTensor>("X");
-    auto* out = ctx.Output<framework::LoDTensor>("Out");
+    auto* x = ctx.Input<framework::Tensor>("X");
+    auto* out = ctx.Output<framework::Tensor>("Out");
     auto scale = static_cast<T>(ctx.Attr<float>("scale"));
     auto bias = static_cast<T>(ctx.Attr<float>("bias"));
     auto bias_after_scale = ctx.Attr<bool>("bias_after_scale");
+    auto stream =
+        ctx.template device_context<paddle::platform::NPUDeviceContext>()
+            .stream();
     float _power = 1.0;
     if (bias_after_scale) {
       out->mutable_data<T>(ctx.GetPlace());
@@ -37,9 +40,6 @@ class ScaleNPUKernel : public framework::OpKernel<T> {
           NpuOpRunner("Power", {*x}, {*out},
                       {{"power", _power}, {"scale", scale}, {"shift", bias}});
 
-      auto stream =
-          ctx.template device_context<paddle::platform::NPUDeviceContext>()
-              .stream();
       runner.Run(stream);
     }
   }
