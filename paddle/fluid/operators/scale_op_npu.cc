@@ -51,6 +51,4 @@ class ScaleNPUKernel : public framework::OpKernel<T> {
 namespace ops = paddle::operators;
 
 REGISTER_OP_NPU_KERNEL(
-    scale, ops::ScaleNPUKernel<paddle::platform::NPUDeviceContext, float>,
-    ops::ScaleNPUKernel<paddle::platform::NPUDeviceContext,
-                        paddle::platform::float16>);
+    scale, ops::ScaleNPUKernel<paddle::platform::NPUDeviceContext, float>);
