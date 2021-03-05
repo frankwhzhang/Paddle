@@ -39,7 +39,7 @@ class TestScale(OpTest):
             'X': OpTest.np_dtype_to_fluid_dtype(
                 np.random.random((10, 10)).astype(self.dtype))
         }
-        self.attrs = {'scale': -2.3}
+        self.attrs = {'scale': -2.3, 'bias': 0, 'bias_after_scale': True}
         self.outputs = {
             'Out': self.inputs['X'] * self.dtype(self.attrs['scale'])
         }
