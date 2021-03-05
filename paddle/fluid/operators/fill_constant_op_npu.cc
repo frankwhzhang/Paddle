@@ -63,12 +63,6 @@ class FillConstantNPUKernel : public framework::OpKernel<T> {
     }
     auto shape = GetShape(ctx);
 
-    // Get the shape of x
-    Tensor x_shape(framework::proto::VarType::INT32);
-    x_shape.mutable_data<int32_t>({shape.size()}, ctx.GetPlace());
-    TensorFromVector(framework::vectorize<int32_t>(shape), ctx.device_context(),
-                     &x_shape);
-
     Tensor tensor_tmp(data_type);
     tensor_tmp.mutable_data<T>({1}, ctx.GetPlace());
     TensorFromVector(std::vector<T>{value}, ctx.device_context(), &tensor_tmp);
@@ -76,7 +70,7 @@ class FillConstantNPUKernel : public framework::OpKernel<T> {
     // Tensor factor_bc_tensor(data_type);
     out_var->mutable_data<T>(shape, place);
     auto runner_bc =
-        NpuOpRunner("BroadcastTo", {tensor_tmp, x_shape}, {*out_var}, {});
+        NpuOpRunner("FillD", {tensor_tmp}, {*out_var}, {"dims", shape.size()});
     runner_bc.Run(stream);
   }
 };

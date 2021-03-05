@@ -12,7 +12,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License. */
 
-#ifdef PADDLE_WITH_ASCEND_CL
 #include <memory>
 #include <string>
 
@@ -52,5 +51,6 @@ class ScaleNPUKernel : public framework::OpKernel<T> {
 namespace ops = paddle::operators;
 
 REGISTER_OP_NPU_KERNEL(
-    scale, ops::ScaleNPUKernel<paddle::platform::NPUDeviceContext, float>);
-#endif
+    scale, ops::ScaleNPUKernel<paddle::platform::NPUDeviceContext, float>,
+    ops::MulNPUKernel<paddle::platform::NPUDeviceContext,
+                      paddle::platform::float16>);
