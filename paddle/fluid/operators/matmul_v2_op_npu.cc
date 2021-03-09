@@ -68,7 +68,6 @@ class MatMulV2GradNPUKernel : public framework::OpKernel<T> {
     auto* dout = ctx.Input<framework::Tensor>(framework::GradVarName("Out"));
     auto* dx = ctx.Output<framework::Tensor>(framework::GradVarName("X"));
     auto* dy = ctx.Output<framework::Tensor>(framework::GradVarName("Y"));
-    bool transpose_x = ctx.Attr<bool>("trans_x");
     bool transpose_y = ctx.Attr<bool>("trans_y");
     auto stream =
         ctx.template device_context<paddle::platform::NPUDeviceContext>()
