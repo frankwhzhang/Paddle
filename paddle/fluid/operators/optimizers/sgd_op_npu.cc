@@ -48,6 +48,6 @@ namespace ops = paddle::operators;
 REGISTER_OP_NPU_KERNEL(
     sgd, ops::SGDNPUKernel<paddle::platform::NPUDeviceContext, float>,
     ops::SGDNPUKernel<paddle::platform::NPUDeviceContext, double>,
-    ops::MatMulV2NPUKernel<paddle::platform::NPUDeviceContext,
-                           paddle::platform::float16>);
+    ops::SGDNPUKernel<paddle::platform::NPUDeviceContext,
+                      paddle::platform::float16>);
 #endif
