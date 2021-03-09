@@ -79,14 +79,14 @@ class MatMulV2GradNPUKernel : public framework::OpKernel<T> {
         dx->mutable_data<T>(ctx.GetPlace());
         auto runner_dx =
             NpuOpRunner("MatMul", {*dout, *y}, {*dx},
-                        {{"transpose_x1", false)}, {"transpose_x2", false}});
+                        {{"transpose_x1", false}, {"transpose_x2", false}});
 
         runner_dx.Run(stream);
 
         dy->mutable_data<T>(ctx.GetPlace());
         auto runner_dy =
             NpuOpRunner("MatMul", {*dout, *x}, {*dy},
-                        {{"transpose_x1", true)}, {"transpose_x2", false}});
+                        {{"transpose_x1", true}, {"transpose_x2", false}});
 
         runner_dy.Run(stream);
 
@@ -94,14 +94,14 @@ class MatMulV2GradNPUKernel : public framework::OpKernel<T> {
         dx->mutable_data<T>(ctx.GetPlace());
         auto runner_dx =
             NpuOpRunner("MatMul", {*dout, *y}, {*dx},
-                        {{"transpose_x1", false)}, {"transpose_x2", true}});
+                        {{"transpose_x1", false}, {"transpose_x2", true}});
 
         runner_dx.Run(stream);
 
         dy->mutable_data<T>(ctx.GetPlace());
         auto runner_dy =
             NpuOpRunner("MatMul", {*x, *dout}, {*dy},
-                        {{"transpose_x1", true)}, {"transpose_x2", false}});
+                        {{"transpose_x1", true}, {"transpose_x2", false}});
 
         runner_dy.Run(stream);
       }
@@ -109,31 +109,27 @@ class MatMulV2GradNPUKernel : public framework::OpKernel<T> {
     } else if (x->dims().size() > 2) {
       if (transpose_y) {
         dx->mutable_data<T>(ctx.GetPlace());
-        auto runner_dx =
-            NpuOpRunner("BatchMatMul", {*dout, *y}, {*dx},
-                        {{"adj_x1", false)}, {"adj_x2", false}});
+        auto runner_dx = NpuOpRunner("BatchMatMul", {*dout, *y}, {*dx},
+                                     {{"adj_x1", false}, {"adj_x2", false}});
 
         runner_dx.Run(stream);
 
         dy->mutable_data<T>(ctx.GetPlace());
-        auto runner_dy =
-            NpuOpRunner("BatchMatMul", {*dout, *x}, {*dy},
-                        {{"adj_x1", true)}, {"adj_x2", false}});
+        auto runner_dy = NpuOpRunner("BatchMatMul", {*dout, *x}, {*dy},
+                                     {{"adj_x1", true}, {"adj_x2", false}});
 
         runner_dy.Run(stream);
 
       } else {
         dx->mutable_data<T>(ctx.GetPlace());
-        auto runner_dx =
-            NpuOpRunner("BatchMatMul", {*dout, *y}, {*dx},
-                       {{"adj_x1", false)}, {"adj_x2", true}});
+        auto runner_dx = NpuOpRunner("BatchMatMul", {*dout, *y}, {*dx},
+                                     {{"adj_x1", false}, {"adj_x2", true}});
 
         runner_dx.Run(stream);
 
         dy->mutable_data<T>(ctx.GetPlace());
-        auto runner_dy =
-            NpuOpRunner("BatchMatMul", {*x, *dout}, {*dy},
-                       {{"adj_x1", true)}, {"adj_x2", false}});
+        auto runner_dy = NpuOpRunner("BatchMatMul", {*x, *dout}, {*dy},
+                                     {{"adj_x1", true}, {"adj_x2", false}});
 
         runner_dy.Run(stream);
       }

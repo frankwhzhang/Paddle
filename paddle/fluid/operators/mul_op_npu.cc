@@ -80,14 +80,14 @@ class MulGradNPUKernel : public framework::OpKernel<T> {
         dx->mutable_data<T>(ctx.GetPlace());
         auto runner_dx =
             NpuOpRunner("MatMul", {*dout, *y}, {*dx},
-                        {{"transpose_x1", false)}, {"transpose_x2", true}});
+                        {{"transpose_x1", false}, {"transpose_x2", true}});
 
         runner_dx.Run(stream);
 
         dy->mutable_data<T>(ctx.GetPlace());
         auto runner_dy =
             NpuOpRunner("MatMul", {*x, *dout}, {*dy},
-                        {{"transpose_x1", true)}, {"transpose_x2", false}});
+                        {{"transpose_x1", true}, {"transpose_x2", false}});
 
         runner_dy.Run(stream);
       } else if (x->dims().size() == 3 && y->dims().size() == 2) {
@@ -104,7 +104,7 @@ class MulGradNPUKernel : public framework::OpKernel<T> {
         dx->mutable_data<T>(ctx.GetPlace());
         auto runner_dx =
             NpuOpRunner("MatMul", {*dout, *y}, {*dx},
-                        {{"transpose_x1", false)}, {"transpose_x2", true}});
+                        {{"transpose_x1", false}, {"transpose_x2", true}});
 
         runner_dx.Run(stream);
         // to do shape==2
@@ -112,7 +112,7 @@ class MulGradNPUKernel : public framework::OpKernel<T> {
         dy->mutable_data<T>(ctx.GetPlace());
         auto runner_dy =
             NpuOpRunner("MatMul", {tmp_flatten, *dout}, {*dy},
-                        {{"transpose_x1", true)}, {"transpose_x2", false}});
+                        {{"transpose_x1", true}, {"transpose_x2", false}});
 
         runner_dy.Run(stream);
       }
