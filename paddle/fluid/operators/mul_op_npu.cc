@@ -67,7 +67,7 @@ class MulGradNPUKernel : public framework::OpKernel<T> {
   void Compute(const framework::ExecutionContext& ctx) const override {
     auto* x = ctx.Input<framework::Tensor>("X");
     auto* y = ctx.Input<framework::Tensor>("Y");
-    auto* out = ctx.Input<framework::Tensor>(framework::GradVarName("Out"));
+    auto* dout = ctx.Input<framework::Tensor>(framework::GradVarName("Out"));
     auto* dx = ctx.Output<framework::Tensor>(framework::GradVarName("X"));
     auto* dy = ctx.Output<framework::Tensor>(framework::GradVarName("Y"));
     int x_num_col_dims = ctx.Attr<int>("x_num_col_dims");
