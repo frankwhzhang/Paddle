@@ -29,14 +29,8 @@ class MatMulV2NPUKernel : public framework::OpKernel<T> {
     auto* x = ctx.Input<framework::LoDTensor>("X");
     auto* y = ctx.Input<framework::LoDTensor>("Y");
     auto* out = ctx.Output<framework::LoDTensor>("Out");
-    bool transpose_x = ctx.Attr<bool>("transpose_X");
-    bool transpose_y = ctx.Attr<bool>("transpose_Y");
-    PADDLE_ENFORCE_EQ(transpose_x, false,
-                      platform::errors::InvalidArgument(
-                          "matmul npu not support transpose_x is true"));
-    PADDLE_ENFORCE_EQ(transpose_y, false,
-                      platform::errors::InvalidArgument(
-                          "matmul npu not support transpose_y is true"));
+    bool transpose_x = ctx.Attr<bool>("trans_x");
+    bool transpose_y = ctx.Attr<bool>("trans_y");
 
     if (x->dims().size() == 2) {
       out->mutable_data<T>(ctx.GetPlace());
