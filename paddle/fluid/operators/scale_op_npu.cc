@@ -43,7 +43,8 @@ class ScaleNPUKernel : public framework::OpKernel<T> {
       runner.Run(stream);
     } else {
       Tensor tmp_x(x->type());
-      tmp_x.Resize(x->dims()) tmp_x.mutable_data<T>(ctx.GetPlace());
+      tmp_x.Resize(x->dims());
+      tmp_x.mutable_data<T>(ctx.GetPlace());
       auto runner_tmp = NpuOpRunner("Adds", {*x}, {tmp_x}, {{"value", bias}});
       runner_tmp.Run(stream);
 
@@ -64,4 +65,4 @@ namespace ops = paddle::operators;
 
 REGISTER_OP_NPU_KERNEL(
     scale, ops::ScaleNPUKernel<paddle::platform::NPUDeviceContext, float>,
-    scale, ops::ScaleNPUKernel<paddle::platform::NPUDeviceContext, double>);
+    ops::ScaleNPUKernel<paddle::platform::NPUDeviceContext, double>);
